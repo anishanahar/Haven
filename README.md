@@ -1,75 +1,133 @@
-# Nest
+# Nest - Decentralized Savings Platform
 
 > Save for your dreams, not just your balance.
 
-Nest is a goal-based decentralized savings platform on Stellar Soroban. Users
-create named savings goals (a laptop, college fees, a house down payment...),
-each backed by its own isolated on-chain vault contract that accrues
-transparent, on-chain interest.
+Nest is a full-stack, goal-based decentralized savings platform on Stellar Soroban. Users create named savings goals (e.g., a laptop, college fees, a house down payment), each backed by its own isolated on-chain vault contract that accrues transparent, on-chain interest.
 
-This repository is a full-stack monorepo: Soroban smart contracts, a
-Fastify/Postgres backend with an on-chain event indexer, and a Next.js
-frontend — currently deployed and running end-to-end against **Stellar
-Testnet**.
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Technology Stack](#technology-stack)
+- [Installation Guide](#installation-guide)
+- [Environment Variables](#environment-variables)
+- [Smart Contract Deployment Guide](#smart-contract-deployment-guide)
+- [Event Streaming Architecture](#event-streaming-architecture)
+- [Frontend Architecture](#frontend-architecture)
+- [Testing Instructions](#testing-instructions)
+- [CI/CD Pipeline Documentation](#cicd-pipeline-documentation)
+- [Deployment Guide](#deployment-guide)
+- [Troubleshooting Guide](#troubleshooting-guide)
+- [Demo Walkthrough](#demo-walkthrough)
+- [Screenshots](#screenshots)
 
-## Repository layout
+## Project Overview
+Nest reinvents savings by connecting user aspirations directly to yield-bearing decentralized instruments. Unlike traditional banks where yield is opaque, Nest deploys a separate Soroban vault per goal, allowing granular tracking of accrued interest drawn from a protocol-level Treasury.
 
-```
-contracts/   Rust/Soroban smart contracts (goal-factory, goal-vault, treasury, mock-strategy)
-backend/     Fastify + TypeScript API, Prisma/Postgres, Soroban event indexer, cron jobs
-frontend/    Next.js 16 App Router dashboard + landing page
-scripts/     Contract build/deploy scripts
-docs/        Architecture, contract reference, API reference, deployment, testing, roadmap
-```
+## Features
+- **Goal-Based Vaults**: Individual smart contracts for every user goal.
+- **On-Chain Interest**: Transparent APY distribution managed by a Strategy contract and funded via a protocol Treasury.
+- **Real-Time Updates**: Instant UI reflection of on-chain state changes via WebSocket streaming.
+- **Prepare/Submit Workflow**: Secure transaction signing avoiding premature on-chain failures.
+- **Mobile Responsive Dashboard**: Beautiful Next.js UI using Tailwind CSS and Radix primitives.
+- **Gamified Achievements**: Automated milestone tracking for savings consistency.
 
-## Quick start
+## Architecture
+Nest comprises three main layers:
+1. **Soroban Smart Contracts**: Rust-based contracts (`goal-factory`, `goal-vault`, `treasury`, `mock-strategy`).
+2. **Backend Services**: Node/Fastify API, Postgres DB, and an on-chain event indexer.
+3. **Frontend Dashboard**: Next.js 16 App Router application.
 
+For deep dives, see [`docs/architecture.md`](docs/architecture.md).
+
+## Technology Stack
+- **Smart Contracts**: Rust, Stellar Soroban
+- **Backend**: Node.js, Fastify, TypeScript, Prisma, PostgreSQL, Redis
+- **Frontend**: React, Next.js 16, Tailwind CSS, Playwright, Zustand
+- **CI/CD**: GitHub Actions, Docker Compose
+
+## Installation Guide
+### Prerequisites
+- Node.js >= 22
+- pnpm
+- Rust toolchain (`wasm32-unknown-unknown` target)
+- Stellar CLI
+
+### Setup
 ```bash
-# 1. Contracts (requires the stellar CLI + Rust toolchain)
+# 1. Contracts
 ./scripts/build-contracts.sh
-cd contracts && cargo test --workspace && cd ..
 
 # 2. Backend
 cd backend
-cp .env.example .env   # fill in contract addresses — see docs/deployment.md
+cp .env.example .env
 pnpm install
 pnpm prisma:migrate
-pnpm dev        # API on :4000
-pnpm indexer    # separate terminal
-pnpm jobs       # separate terminal
+pnpm dev
 
 # 3. Frontend
 cd ../frontend
 cp .env.example .env.local
 pnpm install
-pnpm dev        # http://localhost:3000
+pnpm dev
 ```
 
-Or run the backend + Postgres + Redis via Docker Compose — see
-`docs/deployment.md`.
+## Environment Variables
+Detailed documentation is found in [`docs/environment-variables.md`](docs/environment-variables.md). Ensure `SOROBAN_RPC_URL` and Contract IDs are aligned across backend and frontend.
 
-## Documentation
+## Smart Contract Deployment Guide
+Deploy to the Stellar Testnet using the automated script:
+```bash
+./scripts/deploy-contracts.sh
+```
+This deploys the `NUSD` token, Vault Wasm, Strategy, Treasury, and Factory, linking them securely. Copy the output IDs to your `.env` files.
 
-| Doc | What's in it |
-|---|---|
-| [`docs/architecture.md`](docs/architecture.md) | System design, why a factory + per-goal vault, interest model, data flow |
-| [`docs/contracts.md`](docs/contracts.md) | Per-contract function reference, event schema, threat model |
-| [`docs/api.md`](docs/api.md) | REST endpoints, the prepare/submit signing pattern, WebSocket events |
-| [`docs/environment-variables.md`](docs/environment-variables.md) | Every env var, backend and frontend |
-| [`docs/testing.md`](docs/testing.md) | How to run all three test suites |
-| [`docs/deployment.md`](docs/deployment.md) | Local, Docker, and hosted deployment; current testnet addresses |
-| [`docs/roadmap.md`](docs/roadmap.md) | What's shipped, what's deliberately deferred, path to mainnet |
+## Event Streaming Architecture
+The Nest Backend runs a specialized **Indexer** that listens for Soroban events (e.g., `Deposit`, `Withdraw`, `GoalCreated`). These events are parsed, stored in Postgres via Prisma, and broadcast to the Next.js frontend via WebSocket.
+The frontend uses a unified `WebSocketProvider` to automatically invalidate React Query caches, ensuring the user sees updated balances instantly without manual refreshes.
 
-## Current testnet deployment
+## Frontend Architecture
+Built on Next.js 16 App Router, the frontend leverages Server Components for SEO and initial load speed, combined with Client Components for heavy interactivity. 
+- State management: `zustand`
+- Data fetching: `@tanstack/react-query`
+- Styling: Tailwind CSS & `shadcn/ui`
 
-See `docs/deployment.md` for live contract addresses. Treasury is funded
-with demo `NUSD` (a Stellar Asset Contract standing in for USDC) so
-interest claims have a real reserve to draw from.
+## Testing Instructions
+```bash
+# Contracts (Rust)
+cd contracts && cargo test --workspace
 
-## Status
+# Backend (Vitest)
+cd backend && pnpm test
 
-Contracts, backend, indexer, and frontend are built and verified end-to-end
-against the live testnet deployment (real signed transactions: create goal
-→ deposit → withdraw, confirmed on-chain and reflected in the dashboard).
-Gamification/achievements and deeper automated integration-test coverage are
-the two largest deliberately-deferred items — see `docs/roadmap.md`.
+# Frontend (Playwright e2e)
+cd frontend && pnpm test:e2e
+```
+
+## CI/CD Pipeline Documentation
+A complete GitHub Actions pipeline is defined in `.github/workflows/ci.yml`.
+- **Triggers**: On push to `main` and Pull Requests.
+- **Jobs**:
+  - `contracts`: Installs Rust, compiles Wasm, runs cargo test & clippy.
+  - `backend`: Sets up Node 22, generates Prisma client, runs typechecks & vitest.
+  - `frontend`: Installs Playwright, runs ESLint, typecheck, e2e tests, and verifies production build.
+
+## Deployment Guide
+For production deployment strategies (Docker, Vercel, Railway), refer to [`docs/deployment.md`](docs/deployment.md). The project includes a complete `docker-compose.yml` for unified backend deployment.
+
+## Troubleshooting Guide
+- **Transaction Fails with `ExistingValue`**: Ensure you are using a fresh deployer account or the script is configured to idempotently skip existing assets.
+- **WebSocket Disconnects**: Verify Redis is running locally, as Fastify relies on Redis pub/sub for scaling WS connections.
+- **Prisma Errors**: Ensure `DATABASE_URL` is correct and `pnpm prisma:migrate` has been run.
+
+## Demo Walkthrough
+1. Connect Wallet (e.g., Freighter) on Testnet.
+2. Click "Create Goal" (e.g., "New Laptop" for $2,000).
+3. Sign the transaction. The goal appears instantly on the dashboard via WS.
+4. Click "Deposit", approve the asset transfer, and watch the progress bar animate.
+5. Time-skip (if in dev mode) or wait for interest accrual and click "Withdraw".
+
+## Screenshots
+*(Add path to images here once deployed)*
+- `![Dashboard](public/dashboard-screenshot.png)`
+- `![Create Goal](public/create-goal.png)`
