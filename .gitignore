@@ -1,0 +1,37 @@
+# Rust / Soroban
+# Cargo.lock is intentionally committed (reproducible contract builds).
+/contracts/target/
+**/*.rs.bk
+**/test_snapshots/
+
+# Node
+node_modules/
+.pnpm-store/
+dist/
+build/
+.next/
+out/
+coverage/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Prisma
+backend/prisma/*.db
+
+# Playwright
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+frontend/playwright/.cache/
+
+# Misc
+.turbo/

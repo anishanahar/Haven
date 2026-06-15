@@ -1,0 +1,291 @@
+// Nest — Prisma schema
+//
+// The chain is the source of truth for balances/ownership; every table here
+// is either a read-optimized projection of on-chain events (Goal,
+// GoalHistory, Transaction, Interest) rebuildable by replaying the indexer,
+// or off-chain-only application state (User, Wallet, Session, Notification,
+// AnalyticsSnapshot).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Identity
+// ---------------------------------------------------------------------------
+
+model User {
+  id          String   @id @default(uuid())
+  publicKey   String   @unique @map("public_key")
+  displayName String?  @map("display_name")
+  email       String?  @unique
+  avatarUrl   String?  @map("avatar_url")
+  currency    String   @default("USD")
+  theme       String   @default("dark")
+  points      Int      @default(0)
+  level       Int      @default(1)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  wallets       Wallet[]
+  goals         Goal[]
+  sessions      Session[]
+  notifications Notification[]
+  analytics     AnalyticsSnapshot[]
+  transactions  Transaction[]
+  achievements  UserAchievement[]
+
+  @@map("users")
+}
+
+model Wallet {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  publicKey String   @unique @map("public_key")
+  isPrimary Boolean  @default(true) @map("is_primary")
+  network   String   @default("testnet")
+  label     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@map("wallets")
+}
+
+model Session {
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique @map("token_hash")
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  userAgent String?   @map("user_agent")
+  ipAddress String?   @map("ip_address")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+// SEP-10 challenge transactions issued to wallets attempting to sign in.
+// Short-lived; consumed (marked `usedAt`) on successful verification.
+model AuthChallenge {
+  id           String    @id @default(uuid())
+  publicKey    String    @map("public_key")
+  challengeXdr String    @map("challenge_xdr") @db.Text
+  nonce        String    @unique
+  expiresAt    DateTime  @map("expires_at")
+  usedAt       DateTime? @map("used_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  @@index([publicKey])
+  @@map("auth_challenges")
+}
+
+// ---------------------------------------------------------------------------
+// Goals
+// ---------------------------------------------------------------------------
+
+enum GoalTemplate {
+  LAPTOP
+  COLLEGE_FEES
+  VACATION
+  EMERGENCY_FUND
+  HOUSE_DOWN_PAYMENT
+  WEDDING
+  CUSTOM
+
+  @@map("goal_template")
+}
+
+enum SavingsFrequency {
+  ONE_TIME
+  WEEKLY
+  MONTHLY
+  MANUAL
+
+  @@map("savings_frequency")
+}
+
+model Goal {
+  id               String           @id @default(uuid())
+  goalId           BigInt           @unique @map("goal_id")
+  vaultAddress     String           @unique @map("vault_address")
+  userId           String           @map("user_id")
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name             String
+  icon             String
+  template         GoalTemplate     @default(CUSTOM)
+  targetAmount     Decimal          @map("target_amount") @db.Decimal(20, 7)
+  depositedAmount  Decimal          @default(0) @map("deposited_amount") @db.Decimal(20, 7)
+  accruedInterest  Decimal          @default(0) @map("accrued_interest") @db.Decimal(20, 7)
+  claimedInterest  Decimal          @default(0) @map("claimed_interest") @db.Decimal(20, 7)
+  apyBps           Int              @default(500) @map("apy_bps")
+  unlockDate       DateTime         @map("unlock_date")
+  savingsFrequency SavingsFrequency @default(MANUAL) @map("savings_frequency")
+  completed        Boolean          @default(false)
+  paused           Boolean          @default(false)
+  closed           Boolean          @default(false)
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  history      GoalHistory[]
+  transactions Transaction[]
+  interest     Interest[]
+
+  @@index([userId])
+  @@index([userId, closed])
+  @@map("goals")
+}
+
+// Append-only audit trail of every lifecycle event indexed for a goal —
+// the off-chain mirror of the contract's emitted events.
+model GoalHistory {
+  id        String   @id @default(uuid())
+  goalId    String   @map("goal_id")
+  goal      Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  eventType String   @map("event_type")
+  payload   Json
+  ledger    BigInt
+  txHash    String   @map("tx_hash")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([goalId])
+  @@index([ledger])
+  @@map("goal_history")
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  CLAIM_INTEREST
+  CREATE_GOAL
+  DELETE_GOAL
+
+  @@map("transaction_type")
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
+
+  @@map("transaction_status")
+}
+
+model Transaction {
+  id           String            @id @default(uuid())
+  goalId       String            @map("goal_id")
+  goal         Goal              @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  userId       String            @map("user_id")
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         TransactionType
+  status       TransactionStatus @default(PENDING)
+  amount       Decimal           @db.Decimal(20, 7)
+  txHash       String?           @unique @map("tx_hash")
+  ledger       BigInt?
+  errorMessage String?           @map("error_message")
+  createdAt    DateTime          @default(now()) @map("created_at")
+  confirmedAt  DateTime?         @map("confirmed_at")
+
+  @@index([goalId])
+  @@index([userId])
+  @@index([status])
+  @@map("transactions")
+}
+
+model Interest {
+  id         String   @id @default(uuid())
+  goalId     String   @map("goal_id")
+  goal       Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  kind       String
+  amount     Decimal  @db.Decimal(20, 7)
+  totalAfter Decimal  @map("total_after") @db.Decimal(20, 7)
+  ledger     BigInt
+  txHash     String   @map("tx_hash")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([goalId])
+  @@map("interest")
+}
+
+// ---------------------------------------------------------------------------
+// Engagement
+// ---------------------------------------------------------------------------
+
+enum NotificationType {
+  DEPOSIT_SUCCESS
+  GOAL_COMPLETED
+  WEEKLY_REMINDER
+  INTEREST_UPDATED
+  DEADLINE_APPROACHING
+  TARGET_REACHED
+
+  @@map("notification_type")
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String
+  body      String
+  goalId    String?          @map("goal_id")
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  @@index([userId, read])
+  @@map("notifications")
+}
+
+model AnalyticsSnapshot {
+  id             String   @id @default(uuid())
+  userId         String   @map("user_id")
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date           DateTime @db.Date
+  totalSaved     Decimal  @map("total_saved") @db.Decimal(20, 7)
+  totalInterest  Decimal  @map("total_interest") @db.Decimal(20, 7)
+  activeGoals    Int      @map("active_goals")
+  completedGoals Int      @map("completed_goals")
+  depositCount   Int      @map("deposit_count")
+  depositTotal   Decimal  @map("deposit_total") @db.Decimal(20, 7)
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@map("analytics_snapshots")
+}
+
+// ---------------------------------------------------------------------------
+// Indexer bookkeeping
+// ---------------------------------------------------------------------------
+
+model IndexerCursor {
+  id         Int      @id @default(1)
+  lastLedger BigInt   @default(0) @map("last_ledger")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("indexer_cursor")
+}
+
+// ---------------------------------------------------------------------------
+// Gamification
+// ---------------------------------------------------------------------------
+
+model UserAchievement {
+  id            String   @id @default(uuid())
+  userId        String   @map("user_id")
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String   @map("achievement_id")
+  unlockedAt    DateTime @default(now()) @map("unlocked_at")
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+  @@map("user_achievements")
+}
