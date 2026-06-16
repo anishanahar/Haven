@@ -160,5 +160,5 @@ export const plannerApi = {
 // ---- Achievements ----
 
 export const achievementsApi = {
-  get: () => request<{ achievements: any[]; points: number; level: number }>("/achievements"),
+  get: () => request<{ achievements: Record<string, unknown>[]; points: number; level: number }>("/achievements"),
 };
