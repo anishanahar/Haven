@@ -160,5 +160,6 @@ export const plannerApi = {
 // ---- Achievements ----
 
 export const achievementsApi = {
-  get: () => request<{ achievements: Record<string, unknown>[]; points: number; level: number }>("/achievements"),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get: () => request<{ achievements: any[]; points: number; level: number }>("/achievements"),
 };
