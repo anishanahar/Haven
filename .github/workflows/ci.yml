@@ -48,7 +48,7 @@ jobs:
     env:
       # prisma generate parses the schema and needs DATABASE_URL to be set,
       # but never opens a connection to it — no live Postgres needed here.
-      DATABASE_URL: "postgresql://user:pass@localhost:5432/nest_ci"
+      DATABASE_URL: "postgresql://user:pass@localhost:5432/haven_ci"
       REDIS_URL: "redis://localhost:6379"
       JWT_SECRET: "ci-only-secret-not-used-in-production-000000"
       SOROBAN_RPC_URL: "https://soroban-testnet.stellar.org"
