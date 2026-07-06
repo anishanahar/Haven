@@ -38,7 +38,7 @@ export function WithdrawDialog({ goalId, maxAmount }: { goalId: string; maxAmoun
         <DialogHeader>
           <DialogTitle>Withdraw from this goal</DialogTitle>
           <DialogDescription>
-            Withdraw part or all of your principal at any time — Nest never locks your funds.
+            Withdraw part or all of your principal at any time — Haven never locks your funds.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

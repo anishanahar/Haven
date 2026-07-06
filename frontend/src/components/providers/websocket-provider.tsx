@@ -7,7 +7,7 @@ import { useAuthStore } from "@/store/auth-store";
 
 const WebSocketContext = createContext<{ connected: boolean }>({ connected: false });
 
-export function useNestWebSocket() {
+export function useHavenWebSocket() {
   return useContext(WebSocketContext);
 }
 

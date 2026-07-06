@@ -17,7 +17,7 @@ const features = [
   {
     icon: Wallet,
     title: "You hold the keys",
-    description: "Nest never custodies your funds or your keys. Every deposit, withdrawal, and claim is signed by your own wallet.",
+    description: "Haven never custodies your funds or your keys. Every deposit, withdrawal, and claim is signed by your own wallet.",
   },
   {
     icon: Sparkles,
@@ -44,7 +44,7 @@ export function Features() {
           Everything you need to save with intention
         </h2>
         <p className="mt-4 text-muted-foreground">
-          Nest turns &ldquo;I should really start saving&rdquo; into a concrete, trackable, on-chain plan.
+          Haven turns &ldquo;I should really start saving&rdquo; into a concrete, trackable, on-chain plan.
         </p>
       </div>
 

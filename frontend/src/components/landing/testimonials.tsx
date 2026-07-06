@@ -6,7 +6,7 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     quote:
-      "I've tried a dozen budgeting apps. Nest is the first one where I can actually see my money working — the interest math is right there on-chain.",
+      "I've tried a dozen budgeting apps. Haven is the first one where I can actually see my money working — the interest math is right there on-chain.",
     name: "Priya R.",
     role: "Saving for a house down payment",
   },

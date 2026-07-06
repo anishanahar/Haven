@@ -28,7 +28,7 @@ export function LandingFooter() {
         </nav>
       </div>
       <p className="mx-auto mt-8 max-w-6xl text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Nest. Running on Stellar Testnet — not financial advice, demo interest rates are simulated.
+        © {new Date().getFullYear()} Haven. Running on Stellar Testnet — not financial advice, demo interest rates are simulated.
       </p>
     </footer>
   );

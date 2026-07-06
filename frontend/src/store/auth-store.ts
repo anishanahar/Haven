@@ -23,6 +23,6 @@ export const useAuthStore = create<AuthState>()(
       clearSession: () => set({ token: null, user: null, walletId: null }),
       updateUser: (partial) => set((state) => (state.user ? { user: { ...state.user, ...partial } } : state)),
     }),
-    { name: "nest-auth" },
+    { name: "haven-auth" },
   ),
 );

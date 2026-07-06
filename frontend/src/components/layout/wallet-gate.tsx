@@ -17,7 +17,7 @@ export function WalletGate() {
         </div>
         <h1 className="text-xl font-semibold">Connect your wallet</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Sign in with a Stellar wallet to view and manage your savings goals. Nest never asks for your private key.
+          Sign in with a Stellar wallet to view and manage your savings goals. Haven never asks for your private key.
         </p>
         <Button size="lg" className="mt-6 w-full" onClick={() => connect()} disabled={isConnecting}>
           {isConnecting ? <Loader2 className="animate-spin" /> : <Wallet />}

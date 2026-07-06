@@ -32,16 +32,16 @@ export function CircularProgress({
           strokeWidth={strokeWidth}
           fill="none"
           strokeLinecap="round"
-          stroke="url(#nest-progress-gradient)"
+          stroke="url(#haven-progress-gradient)"
           strokeDasharray={circumference}
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset: offset }}
           transition={{ duration: 1, ease: "easeOut" }}
         />
         <defs>
-          <linearGradient id="nest-progress-gradient" x1="0" y1="0" x2="1" y2="1">
+          <linearGradient id="haven-progress-gradient" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="var(--primary)" />
-            <stop offset="100%" stopColor="var(--nest-accent)" />
+            <stop offset="100%" stopColor="var(--haven-accent)" />
           </linearGradient>
         </defs>
       </svg>

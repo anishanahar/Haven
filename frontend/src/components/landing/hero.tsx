@@ -22,7 +22,7 @@ export function Hero() {
             transition={{ duration: 0.5 }}
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 text-xs text-muted-foreground"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-nest-accent" />
+            <span className="h-1.5 w-1.5 rounded-full bg-haven-accent" />
             Built on Stellar Soroban · Testnet live
           </motion.div>
 
@@ -34,7 +34,7 @@ export function Hero() {
           >
             Save for your dreams,
             <br />
-            <span className="bg-gradient-to-r from-primary to-nest-accent bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary to-haven-accent bg-clip-text text-transparent">
               not just your balance.
             </span>
           </motion.h1>
@@ -116,7 +116,7 @@ function GoalPreviewCard() {
             <p className="text-xs text-muted-foreground">Target Dec 2027</p>
           </div>
         </div>
-        <span className="rounded-full bg-nest-accent/15 px-2.5 py-1 text-xs font-medium text-nest-accent">
+        <span className="rounded-full bg-haven-accent/15 px-2.5 py-1 text-xs font-medium text-haven-accent">
           On track
         </span>
       </div>
@@ -126,7 +126,7 @@ function GoalPreviewCard() {
           <p className="text-3xl font-semibold tracking-tight">{formatMoney(deposited)}</p>
           <p className="text-sm text-muted-foreground">of {formatMoney(target)}</p>
         </div>
-        <div className="flex items-center gap-1 text-sm font-medium text-nest-accent">
+        <div className="flex items-center gap-1 text-sm font-medium text-haven-accent">
           <TrendingUp className="size-4" />
           +72 USDC
         </div>
@@ -134,7 +134,7 @@ function GoalPreviewCard() {
 
       <div className="mt-4 h-2.5 w-full overflow-hidden rounded-full bg-muted">
         <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-primary to-nest-accent"
+          className="h-full rounded-full bg-gradient-to-r from-primary to-haven-accent"
           initial={{ width: 0 }}
           animate={{ width: `${percent}%` }}
           transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
@@ -149,7 +149,7 @@ function GoalPreviewCard() {
         </div>
         <div className="text-right">
           <p className="text-muted-foreground">APY</p>
-          <p className="font-medium text-nest-accent">5.00%</p>
+          <p className="font-medium text-haven-accent">5.00%</p>
         </div>
       </div>
     </div>

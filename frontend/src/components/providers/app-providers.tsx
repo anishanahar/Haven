@@ -5,8 +5,14 @@ import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { WebSocketProvider } from "@/components/providers/websocket-provider";
+import { ensureWalletKitInitialized } from "@/lib/wallet-kit";
+import { useEffect } from "react";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    ensureWalletKitInitialized();
+  }, []);
+
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
       <QueryProvider>

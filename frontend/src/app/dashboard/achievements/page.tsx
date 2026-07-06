@@ -12,17 +12,6 @@ const ICONS: Record<string, React.ElementType> = {
   Flame,
 };
 
-interface AchievementItem {
-  id: string;
-  details: {
-    icon: string;
-    title: string;
-    points: number;
-    description: string;
-  };
-  unlockedAt: string | Date;
-}
-
 export default function AchievementsPage() {
   const { data, isLoading } = useAchievements();
 
@@ -75,11 +64,11 @@ export default function AchievementsPage() {
         {achievements.length === 0 && (
           <div className="col-span-full py-12 text-center text-muted-foreground border rounded-lg bg-card/50">
             <Star className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>You haven&apos;t unlocked any achievements yet. Keep saving!</p>
+            <p>You haven't unlocked any achievements yet. Keep saving!</p>
           </div>
         )}
         
-        {achievements.map((item: AchievementItem) => {
+        {achievements.map((item: any) => {
           const Icon = ICONS[item.details.icon] || Trophy;
           return (
             <Card key={item.id} className="border border-primary/20 bg-card hover:border-primary/50 transition-colors">

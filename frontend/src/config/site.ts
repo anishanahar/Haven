@@ -1,9 +1,9 @@
 export const siteConfig = {
-  name: "Nest",
+  name: "Haven",
   tagline: "Save for your dreams, not just your balance.",
   description:
-    "Nest is a goal-based decentralized savings platform built on Stellar Soroban. Create a savings goal, deposit USDC, and watch it grow with transparent, on-chain interest.",
-  url: "https://nest.app",
+    "Haven is a goal-based decentralized savings platform built on Stellar Soroban. Create a savings goal, deposit USDC, and watch it grow with transparent, on-chain interest.",
+  url: "https://haven.app",
 };
 
 export const apiConfig = {

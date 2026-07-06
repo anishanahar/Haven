@@ -12,10 +12,10 @@ interface CalendarHeatmapProps {
 /** Sequential, single-hue intensity ramp (deposit activity) — never categorical, per dataviz guidance for a magnitude-over-a-grid chart. */
 const INTENSITY_STEPS = [
   "bg-muted",
-  "bg-nest-accent/25",
-  "bg-nest-accent/50",
-  "bg-nest-accent/75",
-  "bg-nest-accent",
+  "bg-haven-accent/25",
+  "bg-haven-accent/50",
+  "bg-haven-accent/75",
+  "bg-haven-accent",
 ];
 
 export function CalendarHeatmap({ data, weeks = 18 }: CalendarHeatmapProps) {

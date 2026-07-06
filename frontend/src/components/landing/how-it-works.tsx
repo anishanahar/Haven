@@ -16,7 +16,7 @@ const steps = [
   {
     step: "03",
     title: "Deploy your vault",
-    description: "Confirm in your wallet — Nest deploys an isolated Soroban contract that holds only this goal's funds.",
+    description: "Confirm in your wallet — Haven deploys an isolated Soroban contract that holds only this goal's funds.",
   },
   {
     step: "04",
@@ -30,7 +30,7 @@ export function HowItWorks() {
     <section id="how-it-works" className="border-y border-border bg-card/40 px-6 py-24">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">How Nest works</h2>
+          <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">How Haven works</h2>
           <p className="mt-4 text-muted-foreground">From idea to on-chain vault in under a minute.</p>
         </div>
 

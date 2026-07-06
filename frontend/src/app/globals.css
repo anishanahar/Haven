@@ -44,8 +44,8 @@
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
-  --color-nest-accent: var(--nest-accent);
-  --color-nest-accent-foreground: var(--nest-accent-foreground);
+  --color-haven-accent: var(--haven-accent);
+  --color-haven-accent-foreground: var(--haven-accent-foreground);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -56,7 +56,7 @@
 }
 
 /*
- * Nest palette. Dark is the primary, designed-for-first theme (the product
+ * Haven palette. Dark is the primary, designed-for-first theme (the product
  * is deliberately "Apple Wallet at night"); light is a faithful inversion
  * rather than an afterthought — every token below has a light-mode value,
  * not just background/foreground.
@@ -82,8 +82,8 @@
   --success-foreground: #ffffff;
   --warning: #b3820a;
   --warning-foreground: #ffffff;
-  --nest-accent: #12b76a;
-  --nest-accent-foreground: #ffffff;
+  --haven-accent: #12b76a;
+  --haven-accent-foreground: #ffffff;
   --border: #e3e6ee;
   --input: #e3e6ee;
   --ring: #3568e0;
@@ -124,8 +124,8 @@
   --success-foreground: #06210f;
   --warning: #f6c445;
   --warning-foreground: #221900;
-  --nest-accent: #7cffb2;
-  --nest-accent-foreground: #04160c;
+  --haven-accent: #7cffb2;
+  --haven-accent-foreground: #04160c;
   --border: rgba(255, 255, 255, 0.08);
   --input: rgba(255, 255, 255, 0.1);
   --ring: #4f8cff;

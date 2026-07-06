@@ -13,7 +13,7 @@ export function CtaSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.5 }}
-        className="glow-primary relative mx-auto max-w-4xl overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/15 via-card to-nest-accent/10 px-8 py-16 text-center"
+        className="glow-primary relative mx-auto max-w-4xl overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/15 via-card to-haven-accent/10 px-8 py-16 text-center"
       >
         <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
           Your next goal is one deposit away

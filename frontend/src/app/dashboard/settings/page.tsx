@@ -23,7 +23,7 @@ export default function SettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle>Profile</CardTitle>
-          <CardDescription>Your Nest identity is your connected Stellar wallet.</CardDescription>
+          <CardDescription>Your Haven identity is your connected Stellar wallet.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div>
@@ -55,7 +55,7 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <Label>Theme</Label>
-              <p className="text-xs text-muted-foreground">Nest is designed dark-mode first.</p>
+              <p className="text-xs text-muted-foreground">Haven is designed dark-mode first.</p>
             </div>
             <div className="flex gap-1 rounded-lg border border-border p-1">
               <Button

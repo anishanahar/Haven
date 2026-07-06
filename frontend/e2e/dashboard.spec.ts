@@ -96,7 +96,7 @@ test.describe("Authenticated dashboard (mocked backend)", () => {
   test.beforeEach(async ({ page }) => {
     await mockBackend(page);
     await page.addInitScript((session) => {
-      window.localStorage.setItem("nest-auth", JSON.stringify(session));
+      window.localStorage.setItem("haven-auth", JSON.stringify(session));
     }, FAKE_SESSION);
   });
 

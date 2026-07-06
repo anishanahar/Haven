@@ -31,7 +31,7 @@ export function LandingNavbar() {
       )}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link href="/" aria-label="Nest home">
+        <Link href="/" aria-label="Haven home">
           <Logo />
         </Link>
         <nav className="hidden items-center gap-8 md:flex" aria-label="Main">

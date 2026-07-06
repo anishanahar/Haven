@@ -30,7 +30,7 @@ export function GoalCard({ goal, index = 0 }: { goal: Goal; index?: number }) {
             <p className="truncate font-medium">{goal.name}</p>
             {goal.paused && <PauseCircle className="size-3.5 shrink-0 text-warning" />}
             {goal.completed && (
-              <span className="shrink-0 rounded-full bg-nest-accent/15 px-2 py-0.5 text-[11px] font-medium text-nest-accent">
+              <span className="shrink-0 rounded-full bg-haven-accent/15 px-2 py-0.5 text-[11px] font-medium text-haven-accent">
                 Completed
               </span>
             )}

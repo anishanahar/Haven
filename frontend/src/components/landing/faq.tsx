@@ -11,7 +11,7 @@ const faqs = [
   {
     question: "Is my money actually on-chain?",
     answer:
-      "Yes. Every goal deploys its own Soroban smart contract vault on Stellar. Deposits, withdrawals, and interest are all real contract calls you sign with your own wallet — Nest never takes custody.",
+      "Yes. Every goal deploys its own Soroban smart contract vault on Stellar. Deposits, withdrawals, and interest are all real contract calls you sign with your own wallet — Haven never takes custody.",
   },
   {
     question: "How is interest calculated?",
@@ -21,7 +21,7 @@ const faqs = [
   {
     question: "Can I withdraw before my deadline?",
     answer:
-      "Always. Nest doesn't lock your principal — the deadline is a planning tool, not a restriction. You can withdraw part or all of your principal at any time.",
+      "Always. Haven doesn't lock your principal — the deadline is a planning tool, not a restriction. You can withdraw part or all of your principal at any time.",
   },
   {
     question: "What happens if I pause a goal?",
@@ -29,9 +29,9 @@ const faqs = [
       "Pausing freezes interest accrual (and blocks new deposits) without touching your existing balance. Resume whenever you're ready and accrual picks back up.",
   },
   {
-    question: "What network does Nest run on?",
+    question: "What network does Haven run on?",
     answer:
-      "Nest currently runs on Stellar's Soroban Testnet. The architecture is designed to move to Mainnet with no contract changes — only a new deployment and funded treasury.",
+      "Haven currently runs on Stellar's Soroban Testnet. The architecture is designed to move to Mainnet with no contract changes — only a new deployment and funded treasury.",
   },
   {
     question: "Is the 'AI Goal Planner' really AI?",
