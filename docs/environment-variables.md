@@ -1,4 +1,4 @@
-# Nest — Environment Variables Reference
+# Haven — Environment Variables Reference
 
 ## Backend (`backend/.env`, see `backend/.env.example`)
 

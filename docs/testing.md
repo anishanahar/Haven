@@ -1,4 +1,4 @@
-# Nest — Testing Guide
+# Haven — Testing Guide
 
 Three independent test suites, one per layer. None of them are placeholders —
 each exercises real logic (contract state transitions, HTTP handlers, and

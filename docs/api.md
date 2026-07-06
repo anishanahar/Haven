@@ -1,4 +1,4 @@
-# Nest — Backend API Reference
+# Haven — Backend API Reference
 
 Base URL (local dev): `http://localhost:4000`
 

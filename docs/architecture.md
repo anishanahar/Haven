@@ -1,15 +1,15 @@
-# Nest — Architecture
+# Haven — Architecture
 
 > Save for your dreams, not just your balance.
 
-This document is the system-level reference for Nest, a goal-based decentralized
+This document is the system-level reference for Haven, a goal-based decentralized
 savings platform built on Stellar Soroban. It covers the on-chain contract
 architecture, the off-chain services that index and serve chain data, and the
 client application. Read this before touching any phase of the codebase.
 
 ## 1. System Overview
 
-Nest lets a user create multiple independent **savings goals** (e.g. "MacBook
+Haven lets a user create multiple independent **savings goals** (e.g. "MacBook
 Pro", "Emergency Fund"). Each goal is backed by its own on-chain vault holding
 USDC (a Stellar Asset Contract token). Vaults accrue a simulated yield that is
 funded by a shared Treasury contract. All contract state changes emit Soroban

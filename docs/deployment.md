@@ -1,4 +1,4 @@
-# Nest — Deployment Guide
+# Haven — Deployment Guide
 
 ## Contracts (Stellar Testnet)
 
@@ -19,7 +19,7 @@ real reserve to pay out against. The `NUSD` asset's issuing account is the
 deployer, so the deployer can mint more at any time with:
 
 ```bash
-stellar contract invoke --id <TOKEN> --source nest-deployer --network testnet \
+stellar contract invoke --id <TOKEN> --source haven-deployer --network testnet \
   -- transfer --from <DEPLOYER_ADDRESS> --to <RECIPIENT> --amount <STROOPS>
 ```
 
@@ -32,7 +32,7 @@ SAC.)
 ### Redeploying
 
 ```bash
-NETWORK=testnet DEPLOYER=nest-deployer ASSET_CODE=NUSD ./scripts/deploy-contracts.sh
+NETWORK=testnet DEPLOYER=haven-deployer ASSET_CODE=NUSD ./scripts/deploy-contracts.sh
 ```
 
 This always creates **fresh** contract instances (Soroban contract addresses
@@ -55,7 +55,7 @@ deployed binary). The fix: never depend on another contract's crate directly
 to get its client type. Define a narrow `#[contractclient]` trait with just
 the functions you call (see `goal-factory/src/lib.rs`'s local `VaultClient`,
 mirroring the pattern already used for `StrategyClient`/`TreasuryClient`/
-`FactoryClient` in `nest-common`). This is also why `goal-factory`'s test
+`FactoryClient` in `haven-common`). This is also why `goal-factory`'s test
 suite imports the compiled vault Wasm via `contractimport!` instead of the
 crate — that path never risks linking foreign contract entry points in.
 
@@ -153,10 +153,10 @@ pnpm dev   # Next.js on :3000
 ### Docker
 
 ```bash
-docker build -t nest-frontend ./frontend \
+docker build -t haven-frontend ./frontend \
   --build-arg NEXT_PUBLIC_API_URL=https://api.example.com \
   --build-arg NEXT_PUBLIC_WS_URL=wss://api.example.com/ws
-docker run -p 3000:3000 nest-frontend
+docker run -p 3000:3000 haven-frontend
 ```
 
 `NEXT_PUBLIC_*` variables are inlined into the client bundle at **build**
@@ -187,7 +187,7 @@ local dev), backend (`prisma generate` + `tsc` + `vitest`), and frontend
 The current deployment is testnet-only, single-admin-key. Before a mainnet
 deployment:
 
-- [ ] Replace the single-key admin (`nest-deployer`) with a multisig or a
+- [ ] Replace the single-key admin (`haven-deployer`) with a multisig or a
       timelocked upgrade path for `set_vault_wasm_hash` / strategy swaps.
 - [ ] Replace `mock-strategy` with a real yield source (see
       `docs/architecture.md` §6 for the swap mechanism — no `goal-vault`

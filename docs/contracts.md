@@ -1,4 +1,4 @@
-# Nest — Contract Reference
+# Haven — Contract Reference
 
 Source: `contracts/`. Built and tested against `soroban-sdk = "26.1.0"`,
 target `wasm32v1-none` (the target the Soroban Environment requires on Rust
@@ -21,7 +21,7 @@ cd contracts && cargo clippy --workspace --all-targets
 
 | Crate | Wasm | Purpose |
 |---|---|---|
-| `nest-common` | (not deployed — plain lib) | Shared math (`linear_interest`, `progress_bps`), cross-contract client interfaces (`StrategyClient`, `TreasuryClient`, `FactoryClient`), and shared typed events. |
+| `haven-common` | (not deployed — plain lib) | Shared math (`linear_interest`, `progress_bps`), cross-contract client interfaces (`StrategyClient`, `TreasuryClient`, `FactoryClient`), and shared typed events. |
 | `mock-strategy` | `mock_strategy.wasm` | Fixed-APY strategy (default 500 bps / 5%), admin-adjustable. |
 | `treasury` | `treasury.wasm` | Holds the interest reserve, pays vaults, verifies callers against the factory registry. |
 | `goal-vault` | `goal_vault.wasm` | One instance per goal; owns deposit/withdraw/interest/lifecycle logic. |
@@ -46,7 +46,7 @@ whole goal alive — no risk of one field's TTL lagging another's.
 |---|---|---|
 | `initialize(goal_id, owner, name, icon, target_amount, unlock_date, strategy_id, token, treasury, factory)` | `owner` | One-time setup. Rejects `target_amount <= 0` and `unlock_date <= now`. |
 | `deposit(amount)` | `owner` | Checkpoints interest, transfers `amount` from owner into the vault, adds to principal. Rejects if closed, paused, or `amount <= 0`. Flips `completed` and emits `GoalCompleted` the moment the target is first reached. |
-| `withdraw(amount)` | `owner` | Checkpoints interest, transfers `amount` of principal back to owner. Always available (even while paused) — Nest never hard-locks a user's own principal. Rejects `amount > deposited_amount`. |
+| `withdraw(amount)` | `owner` | Checkpoints interest, transfers `amount` of principal back to owner. Always available (even while paused) — Haven never hard-locks a user's own principal. Rejects `amount > deposited_amount`. |
 | `claim()` | `owner` | Checkpoints interest, requests the full accrued amount from `treasury::pay_interest`, records however much was actually paid. Errors `NothingToClaim` if nothing has accrued. |
 | `calculate_interest()` | none (view) | Read-only projection: checkpointed interest + linear interest since the last checkpoint. Never mutates state. |
 | `get_progress()` | none (view) | `{ deposited, target, remaining, percent_bps, unlock_date, completed, paused, expired }`. |
@@ -124,7 +124,7 @@ cross-checks against the factory's registry.
 | `get_apy()` | none (view) | The only function `goal-vault` calls. Any replacement strategy must implement this exact signature. |
 | `set_apy(admin, new_apy_bps)` | `admin` | Demo lever to show different accrual rates without redeploying. |
 
-## Events (all via `#[contractevent]`, defined once in `nest-common::events`)
+## Events (all via `#[contractevent]`, defined once in `haven-common::events`)
 
 | Event | Emitted by | Topics | Data |
 |---|---|---|---|
@@ -152,7 +152,7 @@ emits `ApyUpdated`.
   before transferring. Verified by `withdraw_prevents_over_withdrawal`.
 - **Overflow**: all arithmetic on `i128` balances uses `checked_add` /
   `checked_sub` / `checked_mul`, mapped to `Error::Overflow` rather than
-  wrapping. `linear_interest`'s multiplication chain in `nest-common` also
+  wrapping. `linear_interest`'s multiplication chain in `haven-common` also
   uses checked ops and panics (aborting the whole invocation) on overflow.
 - **Zero/negative deposits**: `deposit`, `withdraw`, `fund`, and
   `pay_interest` all reject `amount <= 0`.
@@ -160,7 +160,7 @@ emits `ApyUpdated`.
   incrementing `u64` counter in instance storage; the deploy salt is derived
   directly from it, so two goals can never collide on id or deployed
   address. Verified by `create_goal_ids_are_unique_and_sequential`.
-- **Expired goals**: Nest deliberately does not hard-lock funds past
+- **Expired goals**: Haven deliberately does not hard-lock funds past
   `unlock_date` — `get_progress().expired` is a UI signal, not an
   enforcement mechanism (see `docs/architecture.md` for the rationale).
   Verified by `get_progress_reports_expired_after_deadline`.

@@ -1,8 +1,8 @@
-# Nest - Decentralized Savings Platform
+# Haven - Decentralized Savings Platform
 
 > Save for your dreams, not just your balance.
 
-Nest is a full-stack, goal-based decentralized savings platform on Stellar Soroban. Users create named savings goals (e.g., a laptop, college fees, a house down payment), each backed by its own isolated on-chain vault contract that accrues transparent, on-chain interest.
+Haven is a full-stack, goal-based decentralized savings platform on Stellar Soroban. Users create named savings goals (e.g., a laptop, college fees, a house down payment), each backed by its own isolated on-chain vault contract that accrues transparent, on-chain interest.
 
 ## Table of Contents
 - [Project Overview](#project-overview)
@@ -22,7 +22,7 @@ Nest is a full-stack, goal-based decentralized savings platform on Stellar Sorob
 - [Screenshots](#screenshots)
 
 ## Project Overview
-Nest reinvents savings by connecting user aspirations directly to yield-bearing decentralized instruments. Unlike traditional banks where yield is opaque, Nest deploys a separate Soroban vault per goal, allowing granular tracking of accrued interest drawn from a protocol-level Treasury.
+Haven reinvents savings by connecting user aspirations directly to yield-bearing decentralized instruments. Unlike traditional banks where yield is opaque, Haven deploys a separate Soroban vault per goal, allowing granular tracking of accrued interest drawn from a protocol-level Treasury.
 
 ## Features
 - **Goal-Based Vaults**: Individual smart contracts for every user goal.
@@ -33,7 +33,7 @@ Nest reinvents savings by connecting user aspirations directly to yield-bearing 
 - **Gamified Achievements**: Automated milestone tracking for savings consistency.
 
 ## Architecture
-Nest comprises three main layers:
+Haven comprises three main layers:
 1. **Soroban Smart Contracts**: Rust-based contracts (`goal-factory`, `goal-vault`, `treasury`, `mock-strategy`).
 2. **Backend Services**: Node/Fastify API, Postgres DB, and an on-chain event indexer.
 3. **Frontend Dashboard**: Next.js 16 App Router application.
@@ -83,7 +83,7 @@ Deploy to the Stellar Testnet using the automated script:
 This deploys the `NUSD` token, Vault Wasm, Strategy, Treasury, and Factory, linking them securely. Copy the output IDs to your `.env` files.
 
 ## Event Streaming Architecture
-The Nest Backend runs a specialized **Indexer** that listens for Soroban events (e.g., `Deposit`, `Withdraw`, `GoalCreated`). These events are parsed, stored in Postgres via Prisma, and broadcast to the Next.js frontend via WebSocket.
+The Haven Backend runs a specialized **Indexer** that listens for Soroban events (e.g., `Deposit`, `Withdraw`, `GoalCreated`). These events are parsed, stored in Postgres via Prisma, and broadcast to the Next.js frontend via WebSocket.
 The frontend uses a unified `WebSocketProvider` to automatically invalidate React Query caches, ensuring the user sees updated balances instantly without manual refreshes.
 
 ## Frontend Architecture
