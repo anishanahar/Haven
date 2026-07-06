@@ -137,3 +137,15 @@ export interface ConfirmedGoal {
 export interface ApiErrorShape {
   error: { code: string; message: string; details: unknown };
 }
+
+export interface Achievement {
+  id: string;
+  achievementId: string;
+  unlockedAt: string;
+  details: {
+    icon: string;
+    title: string;
+    points: number;
+    description: string;
+  };
+}

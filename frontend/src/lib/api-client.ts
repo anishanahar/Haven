@@ -12,6 +12,7 @@ import type {
   SavingsFrequency,
   Transaction,
   User,
+  Achievement,
 } from "@/types/api";
 
 export class ApiError extends Error {
@@ -160,5 +161,5 @@ export const plannerApi = {
 // ---- Achievements ----
 
 export const achievementsApi = {
-  get: () => request<{ achievements: any[]; points: number; level: number }>("/achievements"),
+  get: () => request<{ achievements: Achievement[]; points: number; level: number }>("/achievements"),
 };

@@ -4,6 +4,7 @@ import { useAchievements } from "@/hooks/use-achievements";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, Coins, Wallet, Flame, Star, Crown } from "lucide-react";
 import { format } from "date-fns";
+import type { Achievement } from "@/types/api";
 
 const ICONS: Record<string, React.ElementType> = {
   Wallet,
@@ -64,11 +65,11 @@ export default function AchievementsPage() {
         {achievements.length === 0 && (
           <div className="col-span-full py-12 text-center text-muted-foreground border rounded-lg bg-card/50">
             <Star className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>You haven't unlocked any achievements yet. Keep saving!</p>
+            <p>You haven&apos;t unlocked any achievements yet. Keep saving!</p>
           </div>
         )}
         
-        {achievements.map((item: any) => {
+        {achievements.map((item: Achievement) => {
           const Icon = ICONS[item.details.icon] || Trophy;
           return (
             <Card key={item.id} className="border border-primary/20 bg-card hover:border-primary/50 transition-colors">
