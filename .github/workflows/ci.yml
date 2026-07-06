@@ -29,8 +29,10 @@ jobs:
             ~/.cargo/git
             contracts/target
           key: ${{ runner.os }}-cargo-${{ hashFiles('contracts/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
 
-      - name: Build (goal-vault first, then the rest — see docs/testing.md)
+      - name: Build (goal-vault first, then the rest)
         run: ../scripts/build-contracts.sh
 
       - name: Test
@@ -41,13 +43,12 @@ jobs:
 
   backend:
     name: Backend (Node / TypeScript)
+    needs: contracts
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: backend
     env:
-      # prisma generate parses the schema and needs DATABASE_URL to be set,
-      # but never opens a connection to it — no live Postgres needed here.
       DATABASE_URL: "postgresql://user:pass@localhost:5432/haven_ci"
       REDIS_URL: "redis://localhost:6379"
       JWT_SECRET: "ci-only-secret-not-used-in-production-000000"
@@ -57,7 +58,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4 # version is read from package.json's "packageManager" field
+      - uses: pnpm/action-setup@v4
 
       - uses: actions/setup-node@v4
         with:
@@ -68,10 +69,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm prisma:generate
       - run: pnpm typecheck
+      - run: pnpm build
       - run: pnpm test
 
   frontend:
     name: Frontend (Next.js)
+    needs: backend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -79,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4 # version is read from package.json's "packageManager" field
+      - uses: pnpm/action-setup@v4
 
       - uses: actions/setup-node@v4
         with:
