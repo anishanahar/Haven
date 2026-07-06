@@ -4,19 +4,12 @@
 
 Haven is a full-stack, goal-based decentralized savings platform built on Stellar Soroban. Users create named savings goals (e.g., a laptop, college fees, a house down payment), each backed by its own isolated on-chain vault contract that accrues transparent, on-chain interest.
 
-## Table of Contents
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Technology Stack](#technology-stack)
-- [Installation Guide](#installation-guide)
-- [Environment Variables](#environment-variables)
-- [Smart Contract Deployment Guide](#smart-contract-deployment-guide)
-- [Event Streaming Architecture](#event-streaming-architecture)
-- [Frontend Architecture](#frontend-architecture)
-- [Testing Instructions](#testing-instructions)
-- [CI/CD Pipeline Documentation](#cicd-pipeline-documentation)
-- [Deployment Guide](#deployment-guide)
+## Links
+
+| Resource | Link |
+|----------|------|
+| 🚀 Live Demo | https://havenstellar.vercel.app |
+| 🎥 Demo Video | https://youtu.be/3aFvuG2WHz0 |
 
 ## Project Overview
 Haven reinvents savings by connecting user aspirations directly to yield-bearing decentralized instruments. Unlike traditional banks where yield is opaque, Haven deploys a separate Soroban vault per goal, allowing granular tracking of accrued interest drawn from a protocol-level Treasury.
