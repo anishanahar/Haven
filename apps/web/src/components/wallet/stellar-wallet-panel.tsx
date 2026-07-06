@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { detectFreighter, connectWallet, signTx } from "../../lib/stellar-wallet";
 import { useWallet } from "../../hooks/use-stellar-wallet";
 
@@ -17,46 +17,64 @@ export function StellarWalletPanel() {
     sendXlm,
   } = useWallet();
 
-  const [hasFreighter, setHasFreighter] = useState<boolean | null>(null);
-  const [recipient, setRecipient] = useState("");
+  const [hasFreighter, setHasFreighter] = useState<boolean>(true);
+  const [checkingFreighter, setCheckingFreighter] = useState(true);
+  
+  const [toAddress, setToAddress] = useState("");
   const [amount, setAmount] = useState("");
-  const [txHash, setTxHash] = useState<string | null>(null);
-  const [txError, setTxError] = useState<string | null>(null);
+  const [txStatus, setTxStatus] = useState<"idle" | "pending" | "success" | "error">("idle");
+  const [txHash, setTxHash] = useState("");
+  const [txError, setTxError] = useState("");
 
   useEffect(() => {
-    async function checkFreighter() {
+    async function checkExtension() {
       const detected = await detectFreighter();
       setHasFreighter(detected);
+      setCheckingFreighter(false);
     }
-    checkFreighter();
+    checkExtension();
   }, []);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTxHash(null);
-    setTxError(null);
-    if (!recipient || !amount) return;
-
+    if (!toAddress || !amount) return;
+    
+    setTxStatus("pending");
+    setTxError("");
+    setTxHash("");
+    
     try {
-      const result = await sendXlm(recipient, amount);
+      const result = await sendXlm(toAddress, amount);
       setTxHash(result.hash);
-      setRecipient("");
+      setTxStatus("success");
+      setToAddress("");
       setAmount("");
     } catch (err: any) {
       setTxError(err.message || "Failed to send transaction");
+      setTxStatus("error");
     }
   };
 
-  if (hasFreighter === false) {
+  if (checkingFreighter) {
     return (
-      <div className="p-6 border rounded-lg bg-gray-50 shadow-sm text-center">
-        <h2 className="text-xl font-bold mb-4 text-gray-800">Freighter Wallet Not Detected</h2>
-        <p className="mb-4 text-gray-600">Please install the Freighter extension to use this app.</p>
+      <div className="flex justify-center items-center p-8 bg-white rounded-2xl shadow-xl max-w-md mx-auto border border-gray-100">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (!hasFreighter) {
+    return (
+      <div className="p-8 bg-white rounded-2xl shadow-xl max-w-md mx-auto border border-gray-100 text-center">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Freighter Wallet Required</h2>
+        <p className="text-gray-600 mb-6">
+          Please install the Freighter browser extension to connect to the Stellar network.
+        </p>
         <a
           href="https://freighter.app"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-200"
         >
           Install Freighter
         </a>
@@ -65,77 +83,75 @@ export function StellarWalletPanel() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 border rounded-lg shadow-sm bg-white">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Stellar Wallet</h2>
+    <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md mx-auto border border-gray-100">
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-2xl font-bold text-gray-900">Stellar Wallet</h2>
+        {isConnected && (
+          <div className="flex items-center space-x-2">
+            <span className="flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+            <span className="text-sm font-medium text-green-600">Connected</span>
+          </div>
+        )}
+      </div>
 
-      {error && !txError && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded text-sm">
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm font-medium">
           {error}
         </div>
       )}
 
       {!isConnected ? (
-        <button
-          onClick={connect}
-          disabled={isLoading}
-          className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition disabled:opacity-50"
-        >
-          {isLoading ? "Connecting..." : "Connect Wallet"}
-        </button>
+        <div className="flex flex-col items-center">
+          <p className="text-gray-500 mb-6 text-center">
+            Connect your Freighter wallet to manage your XLM and send transactions on the testnet.
+          </p>
+          <button
+            onClick={connect}
+            disabled={isLoading}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 transform hover:-translate-y-0.5"
+          >
+            {isLoading ? "Connecting..." : "Connect Wallet"}
+          </button>
+        </div>
       ) : (
         <div className="space-y-6">
-          <div className="p-4 bg-gray-50 rounded-lg border">
-            <p className="text-sm text-gray-500 mb-1">Address</p>
-            <p className="font-mono text-sm break-all mb-4 text-gray-800">{address}</p>
+          <div className="bg-gray-50 p-5 rounded-2xl border border-gray-100">
+            <div className="mb-4">
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                Wallet Address
+              </label>
+              <div className="font-mono text-sm text-gray-800 break-all bg-white p-2 rounded-lg border border-gray-200">
+                {address}
+              </div>
+            </div>
             
-            <p className="text-sm text-gray-500 mb-1">Balance (Testnet)</p>
-            <div className="flex items-center justify-between">
-              <p className="text-xl font-semibold text-gray-800">
-                {balance === "0" && error === "Account not funded" 
-                  ? "0 XLM (account not funded)" 
-                  : `${balance} XLM`}
-              </p>
+            <div className="flex justify-between items-end">
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                  Balance
+                </label>
+                <div className="text-2xl font-bold text-gray-900">
+                  {isLoading && !balance ? "Loading..." : balance}
+                </div>
+              </div>
               <button
                 onClick={() => refreshBalance()}
                 disabled={isLoading}
-                className="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition disabled:opacity-50"
+                className="text-sm font-medium text-blue-600 hover:text-blue-800 disabled:text-blue-300 flex items-center space-x-1"
               >
-                Refresh
+                <svg className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span>Refresh</span>
               </button>
             </div>
           </div>
 
-          <button
-            onClick={disconnect}
-            disabled={isLoading}
-            className="w-full px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition disabled:opacity-50"
-          >
-            Disconnect
-          </button>
-
-          <div className="pt-4 border-t">
-            <h3 className="text-lg font-semibold mb-4 text-gray-800">Send XLM</h3>
-            
-            {txHash && (
-              <div className="mb-4 p-3 bg-green-100 text-green-800 rounded text-sm">
-                Transaction sent! Hash:{" "}
-                <a
-                  href={`https://stellar.expert/explorer/testnet/tx/${txHash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline break-all"
-                >
-                  {txHash}
-                </a>
-              </div>
-            )}
-            
-            {txError && (
-              <div className="mb-4 p-3 bg-red-100 text-red-700 rounded text-sm">
-                {txError}
-              </div>
-            )}
-
+          <div className="border-t border-gray-100 pt-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Send XLM</h3>
             <form onSubmit={handleSend} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -143,11 +159,12 @@ export function StellarWalletPanel() {
                 </label>
                 <input
                   type="text"
-                  value={recipient}
-                  onChange={(e) => setRecipient(e.target.value)}
-                  placeholder="G..."
                   required
-                  className="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  value={toAddress}
+                  onChange={(e) => setToAddress(e.target.value)}
+                  placeholder="G..."
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all font-mono text-sm"
+                  disabled={txStatus === "pending"}
                 />
               </div>
               <div>
@@ -157,23 +174,50 @@ export function StellarWalletPanel() {
                 <input
                   type="number"
                   step="0.0000001"
-                  min="0"
+                  required
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="0.00"
-                  required
-                  className="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                  disabled={txStatus === "pending"}
                 />
               </div>
               <button
                 type="submit"
-                disabled={isLoading || !recipient || !amount}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition disabled:opacity-50"
+                disabled={txStatus === "pending"}
+                className="w-full bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200"
               >
-                {isLoading ? "Processing..." : "Send XLM"}
+                {txStatus === "pending" ? "Sending..." : "Send XLM"}
               </button>
             </form>
+
+            {txStatus === "success" && (
+              <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-xl">
+                <p className="text-green-800 text-sm font-medium mb-1">Transaction sent!</p>
+                <a
+                  href={`https://stellar.expert/explorer/testnet/tx/${txHash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-600 hover:text-green-700 text-xs font-mono break-all underline"
+                >
+                  Hash: {txHash}
+                </a>
+              </div>
+            )}
+
+            {txStatus === "error" && (
+              <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <p className="text-red-800 text-sm font-medium">{txError}</p>
+              </div>
+            )}
           </div>
+
+          <button
+            onClick={disconnect}
+            className="w-full text-center text-sm font-medium text-gray-500 hover:text-gray-700 py-2 transition-colors"
+          >
+            Disconnect Wallet
+          </button>
         </div>
       )}
     </div>
