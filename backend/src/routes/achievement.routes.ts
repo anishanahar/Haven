@@ -7,7 +7,7 @@ export const achievementRoutes: FastifyPluginAsync = async (app) => {
   app.get(
     "/achievements",
     { preValidation: [app.authenticate] },
-    async (request: any) => {
+    async (request) => {
       const achievements = await achievementService.getUserAchievements(request.user!.id);
       
       const user = await app.prisma.user.findUnique({

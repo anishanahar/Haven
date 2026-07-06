@@ -7,7 +7,7 @@ import { fromStroops } from "@/utils/amounts.js";
 import { env } from "@/config/env.js";
 
 /**
- * All Nest contract events share the same topic shape:
+ * All Haven contract events share the same topic shape:
  * `(event_name: Symbol, goal_id: u64, ...extra_topics)`. See
  * `docs/contracts.md`'s events table for the exact per-event topic list
  * (e.g. `InterestAccrued` additionally carries `owner` then `kind`).

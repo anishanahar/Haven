@@ -1,4 +1,4 @@
-// Nest — Prisma schema
+// Haven — Prisma schema
 //
 // The chain is the source of truth for balances/ownership; every table here
 // is either a read-optimized projection of on-chain events (Goal,

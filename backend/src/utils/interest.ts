@@ -2,7 +2,7 @@ const BPS_DENOMINATOR = 10_000;
 const SECONDS_PER_YEAR = 31_536_000;
 
 /**
- * Mirrors `nest_common::linear_interest` from the Soroban contracts
+ * Mirrors `haven_common::linear_interest` from the Soroban contracts
  * (`contracts/common/src/lib.rs`) exactly, operating on floats since this is
  * used for off-chain projections/estimates (the planner, analytics
  * dashboards) — never for anything that moves funds. The contract itself is

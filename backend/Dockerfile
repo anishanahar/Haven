@@ -18,7 +18,7 @@ RUN pnpm prisma:generate
 RUN pnpm build
 
 # One full install (deps stage) is reused as-is here rather than a second,
-# separate `--prod` install: pnpm's content-addressable store nests the
+# separate `--prod` install: pnpm's content-addressable store havens the
 # generated Prisma client under node_modules/.pnpm/..., not the flat
 # node_modules/.prisma path a second bare install would produce without the
 # schema present to regenerate against. Copying the already-correct
