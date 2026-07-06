@@ -1,5 +1,3 @@
-#![allow(clippy::too_many_arguments)]
-
 use super::*;
 use soroban_sdk::testutils::Address as _;
 use soroban_sdk::Env;

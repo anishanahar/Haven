@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploys the full Nest contract suite to Stellar Testnet and wires the
+# Deploys the full Haven contract suite to Stellar Testnet and wires the
 # pieces together (token, strategy, treasury, factory). Idempotent per
 # resource is NOT guaranteed — re-running deploys fresh contract instances
 # each time. See docs/deployment.md for the manual walkthrough this script
@@ -8,7 +8,7 @@ set -euo pipefail
 cd "$(dirname "$0")/../contracts"
 
 NETWORK="${NETWORK:-testnet}"
-DEPLOYER="${DEPLOYER:-nest-deployer}"
+DEPLOYER="${DEPLOYER:-haven-deployer}"
 ASSET_CODE="${ASSET_CODE:-NUSD}"
 
 if ! stellar keys address "$DEPLOYER" >/dev/null 2>&1; then

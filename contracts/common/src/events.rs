@@ -1,4 +1,4 @@
-//! Shared, typed contract events for the Nest suite, defined once so
+//! Shared, typed contract events for the Haven suite, defined once so
 //! `goal-vault` and `goal-factory` emit an identical schema. Built with the
 //! `#[contractevent]` macro so the event shapes are part of each contract's
 //! published interface spec (discoverable by SDKs/tooling), rather than

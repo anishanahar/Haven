@@ -1,7 +1,7 @@
 //! MockStrategy: a stand-in yield source that always reports a fixed APY.
 //!
 //! `goal-vault` only ever depends on the `StrategyInterface` defined in
-//! `nest-common` (a `get_apy() -> u32` call). This contract is one concrete
+//! `haven-common` (a `get_apy() -> u32` call). This contract is one concrete
 //! implementation of that interface; it can be replaced post-MVP by a
 //! lending strategy, a stable-pool strategy, a treasury-managed strategy, or
 //! a yield aggregator — each implementing the same interface — by updating
@@ -9,7 +9,7 @@
 //! required.
 #![no_std]
 
-use nest_common::MAX_APY_BPS;
+use haven_common::MAX_APY_BPS;
 use soroban_sdk::{contract, contracterror, contractevent, contractimpl, contracttype, Address, Env};
 
 /// Emitted when the admin changes the fixed demo APY.

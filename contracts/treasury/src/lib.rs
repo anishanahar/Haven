@@ -9,7 +9,7 @@
 //! There is no hardcoded allowlist of vault addresses to keep in sync.
 #![no_std]
 
-use nest_common::FactoryClient;
+use haven_common::FactoryClient;
 use soroban_sdk::{contract, contractevent, contracterror, contractimpl, contracttype, token, Address, Env};
 
 /// Emitted when the treasury's reserve is topped up.

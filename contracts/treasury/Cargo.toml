@@ -11,7 +11,7 @@ doctest = false
 
 [dependencies]
 soroban-sdk = { workspace = true }
-nest-common = { workspace = true }
+haven-common = { workspace = true }
 
 [dev-dependencies]
 soroban-sdk = { workspace = true, features = ["testutils"] }

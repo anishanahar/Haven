@@ -16,7 +16,7 @@ publish = false
 
 [workspace.dependencies]
 soroban-sdk = "26.1.0"
-nest-common = { path = "common" }
+haven-common = { path = "common" }
 
 [profile.release]
 opt-level = "z"

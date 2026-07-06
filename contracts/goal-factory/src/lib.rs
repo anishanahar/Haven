@@ -7,7 +7,7 @@
 //! maintained allowlist to fall out of sync.
 #![no_std]
 
-use nest_common::{GoalCreated, GoalDeleted, GoalUpdated};
+use haven_common::{GoalCreated, GoalDeleted, GoalUpdated};
 use soroban_sdk::{
     contract, contractclient, contracterror, contractimpl, contracttype, symbol_short, vec, Address, BytesN, Env,
     String, Vec,
@@ -21,7 +21,7 @@ const LEDGER_BUMP: u32 = 535_680; // ~31 days at 5s/ledger
 /// contract's own Wasm (both export a function named `initialize` with
 /// different signatures, which collide at the ABI level). Instead we only
 /// import the exact vault interface this factory calls, the same pattern
-/// `nest-common` uses for `StrategyClient`/`TreasuryClient`/`FactoryClient`.
+/// `haven-common` uses for `StrategyClient`/`TreasuryClient`/`FactoryClient`.
 #[contractclient(name = "VaultClient")]
 #[allow(dead_code)]
 trait VaultInterface {

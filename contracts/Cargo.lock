@@ -718,7 +718,7 @@ dependencies = [
 name = "goal-factory"
 version = "0.1.0"
 dependencies = [
- "nest-common",
+ "haven-common",
  "soroban-sdk",
 ]
 
@@ -726,7 +726,7 @@ dependencies = [
 name = "goal-vault"
 version = "0.1.0"
 dependencies = [
- "nest-common",
+ "haven-common",
  "soroban-sdk",
 ]
 
@@ -770,6 +770,13 @@ name = "hashbrown"
 version = "0.17.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ed5909b6e89a2db4456e54cd5f673791d7eca6732202bbf2a9cc504fe2f9b84a"
+
+[[package]]
+name = "haven-common"
+version = "0.1.0"
+dependencies = [
+ "soroban-sdk",
+]
 
 [[package]]
 name = "heapless"
@@ -956,14 +963,7 @@ checksum = "88904434abc2901f197fe8cc55f0445e7ded921dba5911dad2e2b39b48e663c4"
 name = "mock-strategy"
 version = "0.1.0"
 dependencies = [
- "nest-common",
- "soroban-sdk",
-]
-
-[[package]]
-name = "nest-common"
-version = "0.1.0"
-dependencies = [
+ "haven-common",
  "soroban-sdk",
 ]
 
@@ -1711,7 +1711,7 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 name = "treasury"
 version = "0.1.0"
 dependencies = [
- "nest-common",
+ "haven-common",
  "soroban-sdk",
 ]
 

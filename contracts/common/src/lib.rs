@@ -1,5 +1,5 @@
 //! Shared types, math, and cross-contract client interfaces used across the
-//! Nest contract suite. This crate is a plain Rust library (no `#[contract]`
+//! Haven contract suite. This crate is a plain Rust library (no `#[contract]`
 //! here) so it can be depended on by every contract crate without pulling in
 //! a second copy of the Soroban entrypoint machinery.
 #![no_std]
@@ -38,11 +38,11 @@ pub fn linear_interest(principal: i128, apy_bps: u32, elapsed_seconds: u64) -> i
     let numerator = principal
         .checked_mul(apy_bps as i128)
         .and_then(|v| v.checked_mul(elapsed_seconds as i128))
-        .expect("nest-common: interest numerator overflow");
+        .expect("haven-common: interest numerator overflow");
 
     let denominator = BPS_DENOMINATOR
         .checked_mul(SECONDS_PER_YEAR as i128)
-        .expect("nest-common: interest denominator overflow");
+        .expect("haven-common: interest denominator overflow");
 
     numerator / denominator
 }
@@ -56,7 +56,7 @@ pub fn progress_bps(deposited: i128, target: i128) -> u32 {
     }
     let bps = deposited
         .checked_mul(BPS_DENOMINATOR)
-        .expect("nest-common: progress overflow")
+        .expect("haven-common: progress overflow")
         / target;
     if bps < 0 {
         0

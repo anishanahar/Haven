@@ -12,7 +12,7 @@
 //! address without it.
 #![no_std]
 
-use nest_common::{
+use haven_common::{
     linear_interest, progress_bps, DepositMade, GoalCompleted, GoalUpdated, InterestAccrued, StrategyClient,
     TreasuryClient, Withdrawal, MAX_APY_BPS,
 };
@@ -196,7 +196,7 @@ impl GoalVault {
 
     /// Withdraw `amount` of principal back to the owner. Always available to
     /// the owner regardless of pause state or deadline — this is the
-    /// owner's own money and Nest does not implement a hard lock. Only
+    /// owner's own money and Haven does not implement a hard lock. Only
     /// *interest accrual* pauses; withdrawal of principal never does.
     pub fn withdraw(env: Env, amount: i128) -> Result<i128, Error> {
         let mut goal = Self::load(&env)?;
@@ -536,7 +536,7 @@ impl GoalVault {
             goal.accrued_interest = goal
                 .accrued_interest
                 .checked_add(interest)
-                .expect("nest: accrued interest overflow");
+                .expect("haven: accrued interest overflow");
             InterestAccrued {
                 goal_id: goal.goal_id,
                 owner: goal.owner.clone(),
