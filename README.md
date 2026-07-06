@@ -35,6 +35,14 @@ Haven comprises three main layers:
 2. **Backend Services**: Node/Fastify API, Postgres DB, Redis for pub/sub, and an on-chain event indexer.
 3. **Frontend Dashboard**: Next.js 16 App Router application.
 
+## CI?CD Pipelines
+
+<img width="1454" height="830" alt="Screenshot 2026-07-06 at 1 01 48 PM" src="https://github.com/user-attachments/assets/582a8263-7b9d-4c9e-9534-8250052a9535" />
+
+## Mobile Responsive
+
+<img width="354" height="686" alt="Screenshot 2026-07-06 at 1 03 51 PM" src="https://github.com/user-attachments/assets/17ed39e6-8894-4c07-877e-424cc089a2da" />
+
 ## Technology Stack
 - **Smart Contracts**: Rust, Stellar Soroban, Stellar SDK v16
 - **Backend**: Node.js (>= 20), Fastify v5, TypeScript, Prisma v6, PostgreSQL, Redis
