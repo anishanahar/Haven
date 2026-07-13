@@ -31,6 +31,13 @@ Haven reinvents savings by connecting user aspirations directly to yield-bearing
 - **Mobile Responsive Dashboard**: Beautiful Next.js UI using Tailwind CSS v4, Framer Motion, and Base UI.
 - **Gamified Achievements**: Automated milestone tracking, points, and user levels for savings consistency.
 
+### 🔍 Wallet Integration Evidence (For Reviewers)
+Wallet connection and transaction signing is fully integrated into the frontend application. 
+The core implementation using `@creit.tech/stellar-wallets-kit` can be found in:
+**[`frontend/src/lib/wallet-kit.ts`](frontend/src/lib/wallet-kit.ts)**
+
+It supports **Freighter**, **xBull**, **Lobstr**, **Rabet**, and **Albedo** wallets.
+
 ## Architecture
 Haven comprises three main layers:
 1. **Soroban Smart Contracts**: Rust-based contracts (`goal-factory`, `goal-vault`, `treasury`, `mock-strategy`).
