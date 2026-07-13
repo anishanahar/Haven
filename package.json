@@ -1,0 +1,9 @@
+{
+  "name": "haven",
+  "version": "1.0.0",
+  "description": "Haven Root - AI Judge Evidence",
+  "dependencies": {
+    "@creit.tech/stellar-wallets-kit": "^2.5.0",
+    "@stellar/freighter-api": "^2.0.0"
+  }
+}
