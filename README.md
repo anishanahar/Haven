@@ -11,6 +11,15 @@ Haven is a full-stack, goal-based decentralized savings platform built on Stella
 | 🚀 Live Demo | https://havenstellar.vercel.app |
 | 🎥 Demo Video | https://youtu.be/3aFvuG2WHz0 |
 
+## Deployed Contracts (Testnet)
+
+| Contract | Address | Explorer Link |
+|----------|---------|---------------|
+| Token (NUSD) | `CBESJ5W7CBME5HGMEHOBWSYE2L3AWZHZI2OK4W7BWU3K5YPB5LVVWHUB` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CBESJ5W7CBME5HGMEHOBWSYE2L3AWZHZI2OK4W7BWU3K5YPB5LVVWHUB) |
+| Strategy | `CCZDR3Z5CIS4NAZWVFKRRFX76HKGETL6SIVBX6JUZACASM6T6PXUPPVQ` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CCZDR3Z5CIS4NAZWVFKRRFX76HKGETL6SIVBX6JUZACASM6T6PXUPPVQ) |
+| Treasury | `CB4NCVRUREERK5CG4KNJU7B3AYHH2LIBGCSCGF4F2V5QDY6BC5IR3U6M` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CB4NCVRUREERK5CG4KNJU7B3AYHH2LIBGCSCGF4F2V5QDY6BC5IR3U6M) |
+| Goal Factory | `CCY2ORSSP5H2CWFBINFLYBMWLOWL4RT4C4DTNZYQQG7BWAX5Q7DK5DAL` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CCY2ORSSP5H2CWFBINFLYBMWLOWL4RT4C4DTNZYQQG7BWAX5Q7DK5DAL) |
+
 ## Project Overview
 Haven reinvents savings by connecting user aspirations directly to yield-bearing decentralized instruments. Unlike traditional banks where yield is opaque, Haven deploys a separate Soroban vault per goal, allowing granular tracking of accrued interest drawn from a protocol-level Treasury.
 
